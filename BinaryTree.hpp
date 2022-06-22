@@ -143,6 +143,18 @@ class BinaryTree {
             }
         }
 
+
+        template<typename Function>
+        void Map(BinaryTreeElement* rootElement, Function function) {
+            if (rootElement->GetLeft() != nullptr) {
+                Map(rootElement->GetLeft(), function);
+            }
+            rootElement->SetValue(function(rootElement->GetValue()));
+            if (rootElement->GetRight() != nullptr) {
+                Map(rootElement->GetRight(), function);
+            }
+        }
+
         void Search(BinaryTreeElement* rootElement, T item) {
             if (item != rootElement->GetValue()) {
                 if (item >= rootElement->GetValue()) {
@@ -201,6 +213,11 @@ class BinaryTree {
             Search(this->root, item);
         }
 
+        template<typename Function>
+        void Map(Function function) {
+            Map(this->root, function);
+        }
+
         std::string ConvertTreeToString(int traversalType) {
             auto* treeToString = new std::string;
             ConvertTreeToString(traversalType, treeToString, this->root);
@@ -237,13 +254,21 @@ class BinaryTree {
                 if (convertTreeToString[i] == '-') {
                     std::string temp;
                     temp.append(sizeof(char), convertTreeToString[i]);
-                    temp.append(sizeof(char), convertTreeToString[i + 1]);
-                    std::cout << temp;
                     ++i;
+                    while (convertTreeToString[i] != ' ') {
+                        temp.append(sizeof(char), convertTreeToString[i]);
+                        ++i;
+                    }
+                    std::cout << temp;
                     std::cout << std::endl;
                 }
                 else if (convertTreeToString[i] != '-' && convertTreeToString[i] != ' ') {
-                    std::cout << convertTreeToString[i];
+                    std::string temp;
+                    while (convertTreeToString[i] != ' ') {
+                        temp.append(sizeof(char), convertTreeToString[i]);
+                        ++i;
+                    }
+                    std::cout << temp;
                     std::cout << std::endl;
                 }
                 else {

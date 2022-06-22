@@ -7,30 +7,16 @@
 
 
 int main() {
-    int a[6] = {-1, 0, 1, 3, 7, 2};
+    int traversalEnter;
+    int menuEnter;
+    int numTypeEnter;
     BinaryTree<int> binaryTree;
-    for (int i : a) {
-        binaryTree.Insert(binaryTree.CreateTreeElement(i));
+    for (int i = 0; i < 10; ++i) {
+        binaryTree.Insert(binaryTree.CreateTreeElement(RandEnterInt()));
     }
-
     std::cout << binaryTree;
-
-    std::vector<int> temp = binaryTree.TreeToSortedArray();
-
-    for (int i = 0; i < size(temp); ++i) {
-        std::cout << temp[i] << " ";
-    }
-    std::cout << std::endl;
-
-    binaryTree = binaryTree.BalancingTree();
-
+    std::cout << "\n";
+    binaryTree.Map([](auto x) {return x*2;});
     std::cout << binaryTree;
-
-    try {
-        binaryTree.Search(0);
-    }
-    catch (ErrorInfo errorInfo) {
-        errorInfo.GetErrorMsg();
-    }
     return 0;
 }
