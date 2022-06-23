@@ -65,13 +65,13 @@ class BinaryTree {
                     if (rootElement->GetLeft() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetLeft());
                     }
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     if (rootElement->GetRight() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetRight());
                     }
                     break;
                 case RootLeftRight:
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     if (rootElement->GetLeft() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetLeft());
                     }
@@ -80,7 +80,7 @@ class BinaryTree {
                     }
                     break;
                 case RootRightLeft:
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     if (rootElement->GetRight() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetRight());
                     }
@@ -95,7 +95,7 @@ class BinaryTree {
                     if (rootElement->GetRight() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetRight());
                     }
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     break;
                 case RightLeftRoot:
                     if (rootElement->GetRight() != nullptr) {
@@ -104,13 +104,13 @@ class BinaryTree {
                     if (rootElement->GetLeft() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetLeft());
                     }
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     break;
                 case RightRootLeft:
                     if (rootElement->GetRight() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetRight());
                     }
-                    treeToString->append(std::to_string(rootElement->GetValue()) + " ");
+                    treeToString->append(std::to_string(rootElement->GetValue()).substr(0, std::to_string(rootElement->GetValue()).find(".") + 4) + " ");
                     if (rootElement->GetLeft() != nullptr) {
                         ConvertTreeToString(traversalType, treeToString, rootElement->GetLeft());
                     }
@@ -196,6 +196,7 @@ class BinaryTree {
         }
     public:
         void Insert(BinaryTreeElement* element) {
+            std::cout << element->GetValue();
             if (this->root == nullptr) {
                 this->root = element;
             }
@@ -235,7 +236,7 @@ class BinaryTree {
             return result;
         }
 
-        BinaryTree BalancingTree() {
+        BinaryTree BalanceTree() {
             std::vector<T> treeToSortedArray = this->TreeToSortedArray();
             BinaryTree binaryTree;
             binaryTree.Insert(this->CreateTreeElement(treeToSortedArray[(size(treeToSortedArray) / 2)]));
@@ -276,5 +277,10 @@ class BinaryTree {
                 }
             }
             return os;
+        }
+
+        BinaryTree& operator=(const BinaryTree binaryTree) {
+            this->root = binaryTree.root;
+            return* this;
         }
 };

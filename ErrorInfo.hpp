@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 
-int NoError = 0;
+int NoErrorCode = 0;
 int NoListCreatedCode = 1;
 int NoArrayCreatedCode = 2;
 int IndexOutOfRangeCode = 3;
@@ -24,7 +24,7 @@ private:
     char message[100];
 public:
     ErrorInfo() {
-        this->code = NoError;
+        this->code = NoErrorCode;
     };
 public:
     void CopyErrorMsg(const char* s) {
