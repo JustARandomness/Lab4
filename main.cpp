@@ -168,7 +168,6 @@ int main() {
 
                     if (randEnter == 1) {
                         doubleNumber = RandEnterDouble();
-                        std::cout << doubleNumber;
                         binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
                     } else {
                         std::cin >> doubleNumber;

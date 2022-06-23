@@ -196,7 +196,6 @@ class BinaryTree {
         }
     public:
         void Insert(BinaryTreeElement* element) {
-            std::cout << element->GetValue();
             if (this->root == nullptr) {
                 this->root = element;
             }
