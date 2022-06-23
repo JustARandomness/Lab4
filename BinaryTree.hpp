@@ -161,11 +161,11 @@ class BinaryTree {
             }
         }
 
-        void Search(BinaryTreeElement* rootElement, T item) {
+        void Contains(BinaryTreeElement* rootElement, T item) {
             if (item != rootElement->GetValue()) {
                 if (item >= rootElement->GetValue()) {
                     if (rootElement->GetRight() != nullptr) {
-                        Search(rootElement->GetRight(), item);
+                        Contains(rootElement->GetRight(), item);
                     }
                     else {
                         ErrorInfo errorInfo;
@@ -177,7 +177,7 @@ class BinaryTree {
                 }
                 else {
                     if (rootElement->GetLeft() != nullptr) {
-                        Search(rootElement->GetLeft(), item);
+                        Contains(rootElement->GetLeft(), item);
                     }
                     else {
                         ErrorInfo errorInfo;
@@ -269,6 +269,10 @@ class BinaryTree {
             }
         }
     public:
+        BinaryTreeElement* GetRoot() {
+            return this->root;
+        }
+
         void Insert(BinaryTreeElement* element) {
             if (this->root == nullptr) {
                 this->root = element;
@@ -291,7 +295,7 @@ class BinaryTree {
                 throw errorInfo;
                 return;
             }
-            Search(this->root, item);
+            Contains(this->root, item);
         }
 
         template<typename Function>

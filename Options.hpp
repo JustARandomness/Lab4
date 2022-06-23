@@ -29,7 +29,7 @@ void PrintMenuOptions() {
     std::cout << "\n1. Insert element" << "\n";
     std::cout << "2. Balance tree" << "\n";
     std::cout << "3. Multiply every tree element by number" << "\n";
-    std::cout << "4. Search for an element" << "\n";
+    std::cout << "4. Contains for an element" << "\n";
     std::cout << "5. Print tree" << "\n";
     std::cout << "6. End program" << "\n";
     std::cout << "7. Run tests" << "\n";
