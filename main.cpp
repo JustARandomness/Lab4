@@ -5,6 +5,7 @@
 #include "Options.hpp"
 #include "BinaryTree.hpp"
 #include <variant>
+#include "Test.hpp"
 
 
 int main() {
@@ -135,6 +136,9 @@ int main() {
                 case 6:
                     endProgram = 1;
                     break;
+                case 7:
+                    Test();
+                    break;
                 default:
                     errorInfo.SetErrorCode(NoSuchOptionFoundCode);
                     errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
@@ -215,6 +219,9 @@ int main() {
                     break;
                 case 6:
                     endProgram = 1;
+                    break;
+                case 7:
+                    Test();
                     break;
                 default:
                     errorInfo.SetErrorCode(NoSuchOptionFoundCode);

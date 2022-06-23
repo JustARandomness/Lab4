@@ -32,6 +32,7 @@ void PrintMenuOptions() {
     std::cout << "4. Search for an element" << "\n";
     std::cout << "5. Print tree" << "\n";
     std::cout << "6. End program" << "\n";
+    std::cout << "7. Run tests" << "\n";
     std::cout << "\n";
 }
 
