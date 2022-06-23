@@ -211,6 +211,13 @@ class BinaryTree {
         }
 
         void Search(T item) {
+            if (this->root == nullptr) {
+                ErrorInfo errorInfo;
+                errorInfo.SetErrorCode(NoTreeCreatedCode);
+                errorInfo.CopyErrorMsg(NoTreeCreatedMsg);
+                throw errorInfo;
+                return;
+            }
             Search(this->root, item);
         }
 

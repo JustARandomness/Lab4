@@ -14,10 +14,10 @@ int RandEnterInt() {
 double RandEnterDouble() {
     int sign = rand() % 3;
     if (sign > 1) {
-        return double(rand() % 2000) / 1000 + rand() % 10;
+        return double(rand() % 2000) / 1000.0 + rand() % 10;
     }
     else {
-        return double(rand() % 2000) / 1000 + rand() % 10 * (-1);
+        return (double(rand() % 2000) / 1000.0 + rand() % 10) * (-1);
     }
 
 }

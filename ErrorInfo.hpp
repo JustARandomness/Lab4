@@ -6,6 +6,7 @@ int NoListCreatedCode = 1;
 int NoArrayCreatedCode = 2;
 int IndexOutOfRangeCode = 3;
 int NoElementFoundCode = 4;
+int NoTreeCreatedCode = 5;
 int NoSuchOptionFoundCode = 7;
 int NoErrYetCode = 8;
 int WrongNumTypeCode = 9;
@@ -17,6 +18,7 @@ const char* IndexOutOfRangeMsg = "Index out of range";
 const char* NoElementFoundMsg = "No such element found in this tree";
 const char* NoSuchOptionFoundMsg = "No such option found. Try again";
 const char* WrongNumTypeMsg = "You entered number of the wrong type. Try again";
+const char* NoTreeCreatedMsg = "There are no elements in this tree";
 
 class ErrorInfo {
 private:

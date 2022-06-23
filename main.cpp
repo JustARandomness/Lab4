@@ -18,8 +18,7 @@ int main() {
     int numTypeEnter;
     int endProgram = 0;
     int randEnter;
-    int number;
-    double doubleNumber;
+    double doubleNumber = 0.0;
 
     PrintNumTypeOptions();
 
@@ -63,17 +62,17 @@ int main() {
 
                 if (numTypeEnter == 1) {
                     if (randEnter == 1) {
-                        number = RandEnterInt();
-                        std::visit([&treeVar, number](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(number));
+                        doubleNumber = RandEnterInt();
+                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
+                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
                             treeVar = binaryTree;
                         }, treeVar);
                     }
                     else {
                         std::cout << "Enter number you want to insert:\n";
                         while (errorInfo.GetErrorCode() != NoErrorCode) {
-                            std::cin >> number;
-                            if (int(number) != number) {
+                            std::cin >> doubleNumber;
+                            if (int(doubleNumber) != doubleNumber) {
                                 errorInfo.SetErrorCode(WrongNumTypeCode);
                                 errorInfo.CopyErrorMsg(WrongNumTypeMsg);
                                 errorInfo.GetErrorMsg();
@@ -85,8 +84,8 @@ int main() {
 
                         errorInfo.SetErrorCode(NoErrYetCode);
 
-                        std::visit([&treeVar, number](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(number));
+                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
+                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
                             treeVar = binaryTree;
                         }, treeVar);
                     }
@@ -110,7 +109,7 @@ int main() {
                 }
                 break;
             case 2:
-                std::visit([&treeVar, number](auto binaryTree) { binaryTree = binaryTree.BalanceTree(); treeVar = binaryTree;}, treeVar);
+                std::visit([&treeVar](auto binaryTree) { binaryTree = binaryTree.BalanceTree(); treeVar = binaryTree;}, treeVar);
                 std::cout << "\nTree is now balanced\n";
                 break;
             case 3:
@@ -133,15 +132,15 @@ int main() {
                     std::visit([&treeVar, doubleNumber](auto binaryTree) {binaryTree.Map([doubleNumber](auto x) {return x * doubleNumber;}); treeVar = binaryTree;}, treeVar);
                 }
                 else {
-                    std::cin >> number;
+                    std::cin >> doubleNumber;
                     std::visit([&treeVar, doubleNumber](auto binaryTree) {binaryTree.Map([doubleNumber](auto x) {return x * doubleNumber;}); treeVar = binaryTree;}, treeVar);
                 }
                 break;
             case 4:
                 std::cout << "Enter number you want to find:\n";
-                std::cin >> number;
+                std::cin >> doubleNumber;
                 try {
-                    std::visit([number](auto binaryTree) {binaryTree.Search(number);}, treeVar);
+                    std::visit([doubleNumber](auto binaryTree) {binaryTree.Search(doubleNumber);}, treeVar);
                 }
                 catch(ErrorInfo errorInfo1) {
                     errorInfo.GetErrorMsg();
