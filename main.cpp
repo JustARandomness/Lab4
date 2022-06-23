@@ -37,38 +37,32 @@ int main() {
 
     errorInfo.SetErrorCode(NoErrYetCode);
 
-    std::variant<BinaryTree<int>, BinaryTree<double>> treeVar;
-
-    while (endProgram != 1) {
-        PrintMenuOptions();
-        std::cin >> menuEnter;
-        switch(menuEnter) {
-            case 1:
-                PrintRandEnterOptions();
-                while (errorInfo.GetErrorCode() != NoErrorCode) {
-                    std::cin >> randEnter;
-                    if (randEnter == 1 || randEnter == 2) {
-                        errorInfo.SetErrorCode(NoErrorCode);
-                        break;
+    if (numTypeEnter == 1) {
+        BinaryTree<int> binaryTree;
+        while (endProgram != 1) {
+            PrintMenuOptions();
+            std::cin >> menuEnter;
+            switch (menuEnter) {
+                case 1:
+                    PrintRandEnterOptions();
+                    while (errorInfo.GetErrorCode() != NoErrorCode) {
+                        std::cin >> randEnter;
+                        if (randEnter == 1 || randEnter == 2) {
+                            errorInfo.SetErrorCode(NoErrorCode);
+                            break;
+                        } else {
+                            errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                            errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
+                            errorInfo.GetErrorMsg();
+                        }
                     }
-                    else {
-                        errorInfo.SetErrorCode(NoSuchOptionFoundCode);
-                        errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
-                        errorInfo.GetErrorMsg();
-                    }
-                }
 
-                errorInfo.SetErrorCode(NoErrYetCode);
+                    errorInfo.SetErrorCode(NoErrYetCode);
 
-                if (numTypeEnter == 1) {
                     if (randEnter == 1) {
                         doubleNumber = RandEnterInt();
-                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
-                            treeVar = binaryTree;
-                        }, treeVar);
-                    }
-                    else {
+                        binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
+                    } else {
                         std::cout << "Enter number you want to insert:\n";
                         while (errorInfo.GetErrorCode() != NoErrorCode) {
                             std::cin >> doubleNumber;
@@ -84,97 +78,151 @@ int main() {
 
                         errorInfo.SetErrorCode(NoErrYetCode);
 
-                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
-                            treeVar = binaryTree;
-                        }, treeVar);
+                        binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
                     }
-                }
-                else {
-                    if (randEnter == 1) {
-                        doubleNumber = RandEnterDouble();
-                        std::cout << doubleNumber;
-                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
-                            treeVar = binaryTree;
-                        }, treeVar);
-                    }
-                    else {
-                        std::cin >> doubleNumber;
-                        std::visit([&treeVar, doubleNumber](auto binaryTree) {
-                            binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
-                            treeVar = binaryTree;
-                        }, treeVar);
-                    }
-                }
-                break;
-            case 2:
-                std::visit([&treeVar](auto binaryTree) { binaryTree = binaryTree.BalanceTree(); treeVar = binaryTree;}, treeVar);
-                std::cout << "\nTree is now balanced\n";
-                break;
-            case 3:
-                if (numTypeEnter == 1) {
+                    break;
+                case 2:
+                    binaryTree = binaryTree.BalanceTree();
+                    std::cout << "\nTree is now balanced\n";
+                    break;
+                case 3:
                     while (errorInfo.GetErrorCode() != NoErrorCode) {
                         std::cin >> doubleNumber;
                         if (int(doubleNumber) != doubleNumber) {
                             errorInfo.SetErrorCode(WrongNumTypeCode);
                             errorInfo.CopyErrorMsg(WrongNumTypeMsg);
                             errorInfo.GetErrorMsg();
-                        }
-                        else {
+                        } else {
                             errorInfo.SetErrorCode(NoErrorCode);
                             break;
                         }
                     }
 
+                        errorInfo.SetErrorCode(NoErrYetCode);
+                        binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
+                    break;
+                case 4:
+                    std::cout << "Enter number you want to find:\n";
+                    std::cin >> doubleNumber;
+                    try {
+                        binaryTree.Search(doubleNumber);
+                    }
+                    catch (ErrorInfo errorInfo1) {
+                        errorInfo1.GetErrorMsg();
+                        std::cout << std::endl;
+                    }
+                    break;
+                case 5:
+                    PrintBinaryTreeTraversalOptions();
+
+                    while (errorInfo.GetErrorCode() != NoErrorCode) {
+                        std::cin >> traversalEnter;
+                        if (traversalEnter == 1 || traversalEnter == 2 || traversalEnter == 3 || traversalEnter == 4 ||
+                            traversalEnter == 5 || traversalEnter == 6) {
+                            errorInfo.SetErrorCode(NoErrorCode);
+                            break;
+                        } else {
+                            errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                            errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
+                            errorInfo.GetErrorMsg();
+                        }
+                    }
+
                     errorInfo.SetErrorCode(NoErrYetCode);
 
-                    std::visit([&treeVar, doubleNumber](auto binaryTree) {binaryTree.Map([doubleNumber](auto x) {return x * doubleNumber;}); treeVar = binaryTree;}, treeVar);
-                }
-                else {
-                    std::cin >> doubleNumber;
-                    std::visit([&treeVar, doubleNumber](auto binaryTree) {binaryTree.Map([doubleNumber](auto x) {return x * doubleNumber;}); treeVar = binaryTree;}, treeVar);
-                }
-                break;
-            case 4:
-                std::cout << "Enter number you want to find:\n";
-                std::cin >> doubleNumber;
-                try {
-                    std::visit([doubleNumber](auto binaryTree) {binaryTree.Search(doubleNumber);}, treeVar);
-                }
-                catch(ErrorInfo errorInfo1) {
+                    std::cout << binaryTree.ConvertTreeToString(traversalEnter);
+                    break;
+                case 6:
+                    endProgram = 1;
+                    break;
+                default:
+                    errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                    errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
                     errorInfo.GetErrorMsg();
-                    std::cout << std::endl;
-                }
-                break;
-            case 5:
-                PrintBinaryTreeTraversalOptions();
-
-                while (errorInfo.GetErrorCode() != NoErrorCode) {
-                    std::cin >> traversalEnter;
-                    if (traversalEnter == 1 || traversalEnter == 2 || traversalEnter == 3 || traversalEnter == 4 || traversalEnter == 5 || traversalEnter == 6) {
-                        errorInfo.SetErrorCode(NoErrorCode);
-                        break;
+                    break;
+            }
+        }
+    }
+    else {
+        BinaryTree<double> binaryTree;
+        while (endProgram != 1) {
+            PrintMenuOptions();
+            std::cin >> menuEnter;
+            switch (menuEnter) {
+                case 1:
+                    PrintRandEnterOptions();
+                    while (errorInfo.GetErrorCode() != NoErrorCode) {
+                        std::cin >> randEnter;
+                        if (randEnter == 1 || randEnter == 2) {
+                            errorInfo.SetErrorCode(NoErrorCode);
+                            break;
+                        } else {
+                            errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                            errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
+                            errorInfo.GetErrorMsg();
+                        }
                     }
-                    else {
-                        errorInfo.SetErrorCode(NoSuchOptionFoundCode);
-                        errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
-                        errorInfo.GetErrorMsg();
+
+                    errorInfo.SetErrorCode(NoErrYetCode);
+
+
+                    if (randEnter == 1) {
+                        doubleNumber = RandEnterDouble();
+                        std::cout << doubleNumber;
+                        binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
+                    } else {
+                        std::cin >> doubleNumber;
+                        binaryTree.Insert(binaryTree.CreateTreeElement(doubleNumber));
                     }
-                }
+                    break;
+                case 2:
+                    binaryTree = binaryTree.BalanceTree();
+                    std::cout << "\nTree is now balanced\n";
+                    break;
+                case 3:
+                    std::cin >> doubleNumber;
+                    binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
+                    break;
+                case 4:
+                    std::cout << "Enter number you want to find:\n";
+                    std::cin >> doubleNumber;
+                    try {
+                        binaryTree.Search(doubleNumber);
+                    }
+                    catch (ErrorInfo errorInfo1) {
+                        errorInfo1.GetErrorMsg();
+                        std::cout << std::endl;
+                    }
+                    break;
+                case 5:
+                    PrintBinaryTreeTraversalOptions();
 
-                errorInfo.SetErrorCode(NoErrYetCode);
+                    while (errorInfo.GetErrorCode() != NoErrorCode) {
+                        std::cin >> traversalEnter;
+                        if (traversalEnter == 1 || traversalEnter == 2 || traversalEnter == 3 || traversalEnter == 4 ||
+                            traversalEnter == 5 || traversalEnter == 6) {
+                            errorInfo.SetErrorCode(NoErrorCode);
+                            break;
+                        } else {
+                            errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                            errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
+                            errorInfo.GetErrorMsg();
+                        }
+                    }
 
-                std::cout << std::visit([traversalEnter](auto binaryTree) {return binaryTree.ConvertTreeToString(traversalEnter);}, treeVar);
-                break;
-            case 6:
-                endProgram = 1;
-                break;
-            default:
-                errorInfo.SetErrorCode(NoSuchOptionFoundCode);
-                errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
-                errorInfo.GetErrorMsg();
-                break;
+                    errorInfo.SetErrorCode(NoErrYetCode);
+
+                    std::cout << binaryTree.ConvertTreeToString(traversalEnter);
+                    break;
+                case 6:
+                    endProgram = 1;
+                    break;
+                default:
+                    errorInfo.SetErrorCode(NoSuchOptionFoundCode);
+                    errorInfo.CopyErrorMsg(NoSuchOptionFoundMsg);
+                    errorInfo.GetErrorMsg();
+                    break;
+            }
         }
     }
     return 0;
