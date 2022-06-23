@@ -87,6 +87,7 @@ int main() {
                     std::cout << "\nTree is now balanced\n";
                     break;
                 case 3:
+                    std::cout << "Enter by what number you want to multiply every element of this tree:\n";
                     while (errorInfo.GetErrorCode() != NoErrorCode) {
                         std::cin >> doubleNumber;
                         if (int(doubleNumber) != doubleNumber) {
@@ -100,7 +101,7 @@ int main() {
                     }
 
                         errorInfo.SetErrorCode(NoErrYetCode);
-                        binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
+                        binaryTree = binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
                     break;
                 case 4:
                     std::cout << "Enter number you want to find:\n";
@@ -183,8 +184,9 @@ int main() {
                     std::cout << "\nTree is now balanced\n";
                     break;
                 case 3:
+                    std::cout << "Enter by what number you want to multiply every element of this tree:\n";
                     std::cin >> doubleNumber;
-                    binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
+                    binaryTree = binaryTree.Map([doubleNumber](auto x) { return x * doubleNumber; });
                     break;
                 case 4:
                     std::cout << "Enter number you want to find:\n";

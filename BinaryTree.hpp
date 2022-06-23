@@ -2,6 +2,10 @@
 #include <cstring>
 #include <cmath>
 
+int Left = 0;
+int Right = 1;
+
+
 template<typename T>
 class BinaryTree {
     private:
@@ -21,6 +25,8 @@ class BinaryTree {
                     this->right = nullptr;
                     this->left = nullptr;
                 }
+
+                ~BinaryTreeElement() = default;
             public:
                 T GetValue() {
                     return this->value;
@@ -187,12 +193,80 @@ class BinaryTree {
                 return;
             }
         }
+
+        BinaryTreeElement* SearchNode(BinaryTreeElement* rootElement, T value) {
+            if (rootElement->GetValue() != value) {
+                if (rootElement->GetValue() >= value) {
+                    if (rootElement->GetLeft() != nullptr) {
+                        SearchNode(rootElement->GetLeft(), value);
+                    }
+                    else {
+                        ErrorInfo errorInfo;
+                        errorInfo.SetErrorCode(NoElementFoundCode);
+                        errorInfo.CopyErrorMsg(NoElementFoundMsg);
+                        throw errorInfo;
+                    }
+                }
+                else {
+                    if (rootElement->GetRight() != nullptr) {
+                        SearchNode(rootElement->GetRight(), value);
+                    }
+                    else {
+                        ErrorInfo errorInfo;
+                        errorInfo.SetErrorCode(NoElementFoundCode);
+                        errorInfo.CopyErrorMsg(NoElementFoundMsg);
+                        throw errorInfo;
+                    }
+                }
+            }
+            else {
+                return rootElement;
+            }
+        }
+
     public:
         BinaryTree() = default;
 
         explicit BinaryTree(T item) {
             auto* newElement = new BinaryTreeElement(item);
             this->root = newElement;
+        }
+
+        BinaryTree(const BinaryTree& treeToCopy) {
+            if (treeToCopy.root != nullptr) {
+                this->root = new BinaryTreeElement(treeToCopy.root->GetValue());
+                CopyElement(this->root, treeToCopy.root->GetLeft(), Left);
+                CopyElement(this->root, treeToCopy.root->GetRight(), Right);
+            }
+            else {
+                this->root = nullptr;
+            }
+        }
+
+        void deleteBinaryTree(BinaryTreeElement* element) {
+            if (element != nullptr) {
+                deleteBinaryTree(element->GetLeft());
+                deleteBinaryTree(element->GetRight());
+                delete element;
+            }
+        }
+
+        ~BinaryTree() {
+            deleteBinaryTree(this->root);
+        }
+
+        void CopyElement(BinaryTreeElement* prevElement, BinaryTreeElement* elementToCopy, int position) {
+            if (elementToCopy != nullptr) {
+                auto* newElement = new BinaryTreeElement(elementToCopy->GetValue());
+                if (position == Left) {
+                    prevElement->SetLeft(newElement);
+                }
+                else {
+                    prevElement->SetRight(newElement);
+                }
+                CopyElement(newElement, elementToCopy->GetLeft(), Left);
+                CopyElement(newElement, elementToCopy->GetRight(), Right);
+            }
         }
     public:
         void Insert(BinaryTreeElement* element) {
@@ -221,8 +295,10 @@ class BinaryTree {
         }
 
         template<typename Function>
-        void Map(Function function) {
-            Map(this->root, function);
+        BinaryTree Map(Function function) {
+            BinaryTree newBinaryTree(*this);
+            Map(newBinaryTree.root, function);
+            return  newBinaryTree;
         }
 
         std::string ConvertTreeToString(int traversalType) {
@@ -255,6 +331,22 @@ class BinaryTree {
             return binaryTree;
         }
 
+        BinaryTree GetSubTree(T value) {
+            BinaryTreeElement* subRoot = nullptr;
+            try {
+                BinaryTreeElement* temp = SearchNode(this->root, value);
+                subRoot = new BinaryTreeElement(temp->GetValue());
+                CopyElement(subRoot, temp->GetLeft(), Left);
+                CopyElement(subRoot, temp->GetRight(), Right);
+            } catch (ErrorInfo errorInfo) {
+                errorInfo.GetErrorMsg();
+
+            }
+            return subRoot;
+        }
+
+
+
         friend std::ostream& operator<< (std::ostream& os, BinaryTree& binaryTree) {
             std::string convertTreeToString = binaryTree.ConvertTreeToString(LeftRootRight);
             for (int i = 0; i < size(convertTreeToString); ++i) {
@@ -286,7 +378,12 @@ class BinaryTree {
         }
 
         BinaryTree& operator=(const BinaryTree binaryTree) {
-            this->root = binaryTree.root;
-            return* this;
+            deleteBinaryTree(this->root);
+            if (binaryTree.root != nullptr) {
+                this->root = new BinaryTreeElement(binaryTree.root->GetValue());
+                CopyElement(this->root, binaryTree.root->GetLeft(), Left);
+                CopyElement(this->root, binaryTree.root->GetRight(), Right);
+            }
+            return *this;
         }
 };
